@@ -175,3 +175,8 @@ body,
   text-align: center;
   font-size: 0.8em;
 }
+
+#backButton {
+  background-color: grey;
+  font-size: large;
+}
