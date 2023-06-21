@@ -12,15 +12,11 @@ function App() {
   useEffect(() => {
     async function fetchBooks() {
       const getAllResponse = await getAll();
-      console.log(getAllResponse);
       setBooksTop(getAllResponse);
     }
     fetchBooks();
   }, []);
 
-  useEffect(() => {
-    console.log("booksTop", booksTop);
-  }, [booksTop]);
 
 
 

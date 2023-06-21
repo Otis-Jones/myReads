@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Book from "../components/book.js";
-import { search, getAll } from "../BooksAPI.js";
+import { search } from "../BooksAPI.js";
 import { Link } from 'react-router-dom';
 
 export default function Search({ setBooksTop, booksTop }) {
@@ -24,27 +24,29 @@ export default function Search({ setBooksTop, booksTop }) {
 
   useEffect(() => {
     async function searchAndGetData() {
-      const response = await search(searchBar);
-      if (response !== undefined) {
-        for (let index = 0; index < response.length; index++) {
-          const element = response[index];
-          // check if it is on the shelf
-          var onShelf = false;
-          var whichShelf;
-          for (let shelfIdx = 0; shelfIdx < booksTop.length; shelfIdx++) {
-            const bookOnShelf = booksTop[shelfIdx];
-            if (bookOnShelf.id === element.id) {
-              onShelf = true;
-              whichShelf = bookOnShelf.shelf;
+      if (searchBar.length > 0) {
+        const response = await search(searchBar);
+        if (response !== undefined) {
+          for (let index = 0; index < response.length; index++) {
+            const element = response[index];
+            // check if it is on the shelf
+            var onShelf = false;
+            var whichShelf;
+            for (let shelfIdx = 0; shelfIdx < booksTop.length; shelfIdx++) {
+              const bookOnShelf = booksTop[shelfIdx];
+              if (bookOnShelf.id === element.id) {
+                onShelf = true;
+                whichShelf = bookOnShelf.shelf;
+              }
             }
-          }
-          if (onShelf === true) {
-            element.onShelf = true;
-            element.shelf = whichShelf;
-            setBooks(c => c.concat(element));
-          } else {
-            element.onShelf = false;
-            setBooks(c => c.concat(element));
+            if (onShelf === true) {
+              element.onShelf = true;
+              element.shelf = whichShelf;
+              setBooks(c => c.concat(element));
+            } else {
+              element.onShelf = false;
+              setBooks(c => c.concat(element));
+            }
           }
         }
       }
@@ -76,7 +78,7 @@ export default function Search({ setBooksTop, booksTop }) {
       </div>
       <div className="search-books-results">
         <ol className="books-grid">
-          {(books.length > 0) && books.map((book, idx) => {
+          {(books.length > 0) ? books.map((book, idx) => {
             return (
               <li key={idx}>
                 <Book
@@ -93,7 +95,9 @@ export default function Search({ setBooksTop, booksTop }) {
                 />
               </li>
             )
-          })}
+          }) :
+            (searchBar.length > 0) ? "No books found" : ""
+          }
         </ol>
       </div>
     </div>

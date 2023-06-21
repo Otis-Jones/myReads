@@ -37,9 +37,9 @@ export default function Home({ booksTop, setBooksTop }) {
               </div>
               <div className="list-books-content">
                 {shelves.map((shelf, idx) => {
-                  console.log("shelf", shelf);
                   const shelfName = shelfNames[idx];
                   return (
+                    <div key={idx}>
                     <Shelf
                       currentShelf={shelf}
                       key={idx}
@@ -53,6 +53,7 @@ export default function Home({ booksTop, setBooksTop }) {
                       setReadShelf={setReadShelf}
                       shelfName={shelfName}
                       />
+                    </div>
                   )
                 })}
 
